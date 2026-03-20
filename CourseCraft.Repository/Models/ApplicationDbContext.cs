@@ -12,6 +12,28 @@ public class ApplicationDbContext : DbContext
 
     }
     public DbSet<User> Users { get; set; }
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseStudentMapping> CourseStudentMappings { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("connectionString");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<CourseStudentMapping>()
+            .HasKey(csm => csm.CourseStudentMappingId);
+
+        modelBuilder.Entity<CourseStudentMapping>()
+            .HasOne(csm => csm.Course)
+            .WithMany(c => c.CourseStudentMappings)
+            .HasForeignKey(csm => csm.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<CourseStudentMapping>()
+            .HasOne(csm => csm.User)
+            .WithMany(u => u.CourseStudentMappings)
+            .HasForeignKey(csm => csm.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

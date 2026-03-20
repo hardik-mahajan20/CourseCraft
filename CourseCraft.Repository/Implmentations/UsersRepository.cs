@@ -15,5 +15,15 @@ public class UsersRepository(ApplicationDbContext applicationDbContext) : IUsers
     }
 
     #endregion
+
+    #region AddUser
+
+    public async Task<bool> AddUserAsync(User user)
+    {
+        await _applicationDbContext.Users.AddAsync(user);
+        return await _applicationDbContext.SaveChangesAsync() > 0;
+    }
+
+    #endregion
 }
 

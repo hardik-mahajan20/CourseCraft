@@ -18,4 +18,11 @@ public interface IAuthenticationService
     /// <param name="email">The email of the user to check.</param>
     /// <returns>A task that returns true if the user exists, otherwise false.</returns>
     Task<bool> CheckIfUserExistsAsync(string userEmail);
+
+    /// <summary>
+    /// Adds a new user asynchronously to the database.
+    /// </summary>
+    /// <param name="addUserViewModel">The addUserViewModel modal to add.</param>
+    /// <returns>A task that returns true if the update was successful, otherwise false.</returns>
+    Task<bool> RegisterUserAsync(AddUserViewModel addUserViewModel);
 }
