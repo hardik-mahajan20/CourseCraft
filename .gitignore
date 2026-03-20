@@ -1,0 +1,68 @@
+####################################
+# .NET / Build artifacts
+####################################
+bin/
+obj/
+**/bin/
+**/obj/
+artifacts/
+
+####################################
+# Visual Studio
+####################################
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+####################################
+# VS Code
+####################################
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+.history/
+
+####################################
+# Logs & temp files
+####################################
+*.log
+*.tmp
+
+####################################
+# Test / Coverage
+####################################
+TestResults/
+coverage*.json
+coverage*.xml
+coverage*.info
+
+####################################
+# NuGet
+####################################
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+####################################
+# OS specific
+####################################
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+####################################
+# Rider / JetBrains
+####################################
+.idea/
+*.sln.iml
