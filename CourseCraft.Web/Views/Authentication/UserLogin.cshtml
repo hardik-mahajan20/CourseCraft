@@ -58,8 +58,6 @@
                                 <input asp-for="UserEmail" type="email" class="form-control " id="custom-login-input"
                                     aria-describedby="emailHelp" placeholder="Email*">
                                 <label for="UserEmail">Email address</label>
-                                <img src="~/images/icons/user.png"
-                                    style="display: inline; margin-left: -23px; vertical-align: middle">
                             </div>
                             <span asp-validation-for="UserEmail" class="text-danger"></span>
                         </div>
@@ -68,9 +66,6 @@
                                 <input type="password" class="form-control" asp-for="UserPassword"
                                     id="custom-password-input" placeholder="Password*">
                                 <label for="UserPassword">Password</label>
-                                <img src="~/images/icons/hidden.png" id="toggle_button_eye"
-                                    style="display: inline; margin-left: -23px; vertical-align: middle"
-                                    onclick="toggle()">
                             </div>
                             <span asp-validation-for="UserPassword" class="text-danger"></span>
                         </div>
