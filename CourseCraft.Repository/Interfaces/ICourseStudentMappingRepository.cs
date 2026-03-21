@@ -1,25 +1,25 @@
 using CourseCraft.Repository.Models;
 
-namespace CourseCraft.Repository.Intefaces;
+namespace CourseCraft.Repository.Interfaces;
 
 public interface ICourseStudentMappingRepository
 {
     /// <summary>
-    /// Retrieves all courseStudentMapping as quearyable.
+    /// Retrieves all courseStudentMapping as queryable.
     /// </summary>
-    /// <returns>All courseStudentMapping as quearyable.</returns>
+    /// <returns>All courseStudentMapping as queryable.</returns>
     IQueryable<CourseStudentMapping> GetCourseStudentMappingsAsQueryable();
 
     /// <summary>
-    /// Retrieves all courseStudentMapping with users as quearyable.
+    /// Retrieves all courseStudentMapping with users as queryable.
     /// </summary>
-    /// <returns>All courseStudentMapping with users as quearyable.</returns>
+    /// <returns>All courseStudentMapping with users as queryable.</returns>
     IQueryable<CourseStudentMapping> GetCourseStudentMappingsWithUsersAsQueryable();
 
     /// <summary>
-    /// Retrieves all courseStudentMapping with users and course as quearyable.
+    /// Retrieves all courseStudentMapping with users and course as queryable.
     /// </summary>
-    /// <returns>All courseStudentMapping with users and course as quearyable.</returns>
+    /// <returns>All courseStudentMapping with users and course as queryable.</returns>
     IQueryable<CourseStudentMapping> GetCourseStudentMappingsWithUsersAndCourseAsQueryable();
 
     /// <summary>

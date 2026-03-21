@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using System.Text;
-using CourseCraft.Repository.Implmentations;
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Implementations;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
-using CourseCraft.Service.Implmentations;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Implementations;
+using CourseCraft.Service.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

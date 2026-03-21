@@ -1,10 +1,10 @@
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
 using CourseCraft.Repository.ViewModels;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseCraft.Service.Implmentations;
+namespace CourseCraft.Service.Implementations;
 
 public class CoursesService(ICoursesRepository coursesRepository, ICourseStudentMappingRepository courseStudentMappingRepository) : ICoursesService
 {

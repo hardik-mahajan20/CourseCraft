@@ -1,13 +1,13 @@
 using CourseCraft.Repository.Models;
 
-namespace CourseCraft.Repository.Intefaces;
+namespace CourseCraft.Repository.Interfaces;
 
 public interface ICoursesRepository
 {
     /// <summary>
-    /// Retrieves all courses as quearyable.
+    /// Retrieves all courses as queryable.
     /// </summary>
-    /// <returns>All courses as quearyable.</returns>
+    /// <returns>All courses as queryable.</returns>
     IQueryable<Course> GetAllCoursesAsQueryable();
 
     /// <summary>

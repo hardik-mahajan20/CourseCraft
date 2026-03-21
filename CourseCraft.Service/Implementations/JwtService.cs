@@ -1,14 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CourseCraft.Service.Implmentations;
+namespace CourseCraft.Service.Implementations;
 
 public class JwtService(IConfiguration configuration, IUsersRepository userRepository) : IJwtService
 {

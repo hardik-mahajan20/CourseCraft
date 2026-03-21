@@ -1,13 +1,13 @@
 using CourseCraft.Repository.Models;
 
-namespace CourseCraft.Repository.Intefaces;
+namespace CourseCraft.Repository.Interfaces;
 
 public interface IUsersRepository
 {
     /// <summary>
-    /// Retrieves all user as quearyable.
+    /// Retrieves all user as queryable.
     /// </summary>
-    /// <returns>All user as quearyable.</returns>
+    /// <returns>All user as queryable.</returns>
     IQueryable<User> GetAllUserAsQueryable();
 
     /// <summary>

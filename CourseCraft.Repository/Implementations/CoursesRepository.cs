@@ -1,8 +1,8 @@
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseCraft.Repository.Implmentations;
+namespace CourseCraft.Repository.Implementations;
 
 public class CoursesRepository(ApplicationDbContext applicationDbContext) : ICoursesRepository
 {

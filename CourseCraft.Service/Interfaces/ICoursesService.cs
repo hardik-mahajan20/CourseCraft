@@ -1,7 +1,7 @@
 using CourseCraft.Repository.Models;
 using CourseCraft.Repository.ViewModels;
 
-namespace CourseCraft.Service.Intefaces;
+namespace CourseCraft.Service.Interfaces;
 
 public interface ICoursesService
 {

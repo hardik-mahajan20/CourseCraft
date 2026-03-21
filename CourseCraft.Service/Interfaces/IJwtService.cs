@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace CourseCraft.Service.Intefaces;
+namespace CourseCraft.Service.Interfaces;
 
 public interface IJwtService
 {

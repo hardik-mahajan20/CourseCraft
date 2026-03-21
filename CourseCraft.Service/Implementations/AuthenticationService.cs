@@ -1,11 +1,11 @@
 using System.Text;
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
 using CourseCraft.Repository.ViewModels;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseCraft.Service.Implmentations;
+namespace CourseCraft.Service.Implementations;
 
 public class AuthenticationService(IUsersRepository usersRepository) : IAuthenticationService
 {
@@ -15,12 +15,13 @@ public class AuthenticationService(IUsersRepository usersRepository) : IAuthenti
 
     public async Task<UserLoginViewModel?> AuthenticateUserUsingEmailPasswordAsync(string userEmail, string userPassword)
     {
-        string? hashedPassword = HashPassword(userPassword);
+        // string? hashedPassword = HashPassword(userPassword);
         User? user = await _usersRepository.GetAllUserAsQueryable()
                                                 .FirstOrDefaultAsync(u => u.UserEmail.ToLower() == userEmail.ToLower()
-                                                                && u.UserPassword.ToLower() == hashedPassword.ToLower());
+                                                                && u.UserPassword.ToLower() == userPassword.ToLower());
 
         if (user == null)
+        
             return null;
 
         UserLoginViewModel userLoginViewModel = new()

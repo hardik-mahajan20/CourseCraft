@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Interfaces;
 using CourseCraft.Service.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
