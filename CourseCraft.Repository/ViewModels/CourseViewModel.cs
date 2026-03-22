@@ -23,6 +23,9 @@ public class CourseViewModel
     public string? CourseDepartment { get; set; }
 
     public bool? IsOpen { get; set; }
-
     public bool? IsDeleted { get; set; }
+
+    public bool? IsEnrolled { get; set; }
+
+    public bool? IsCompleted { get; set; }
 }

@@ -34,7 +34,7 @@ public class AuthenticationController(IAuthenticationService authenticationServi
 
             UserLoginViewModel? userLoginViewModel = await _authenticationService.AuthenticateUserUsingEmailPasswordAsync(
                 model.UserEmail!.ToLower(),
-                model.UserPassword!.ToLower()!
+                model.UserPassword!
             );
 
             if (userLoginViewModel == null)
@@ -117,8 +117,8 @@ public class AuthenticationController(IAuthenticationService authenticationServi
                 AddUserViewModel? newUser = new()
                 {
                     UserEmail = addUserViewModel.UserEmail.ToLower(),
-                    UserPassword = HashPassword(addUserViewModel.UserPassword!),
-                    ConfirmPassword = HashPassword(addUserViewModel.UserPassword!),
+                    UserPassword = addUserViewModel.UserPassword!,
+                    ConfirmPassword = addUserViewModel.UserPassword!,
                     UserName = addUserViewModel.UserName,
                     UserRole = "Student"
                 };
@@ -152,15 +152,6 @@ public class AuthenticationController(IAuthenticationService authenticationServi
             TempData["ErrorMessage"] = "An error occurred while processing your request. Please try again.";
             return RedirectToAction("UserLogin", "Authentication");
         }
-    }
-
-    #endregion
-
-    #region HelperMethod 
-
-    private static string HashPassword(string password)
-    {
-        return Convert.ToBase64String(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(password)));
     }
 
     #endregion

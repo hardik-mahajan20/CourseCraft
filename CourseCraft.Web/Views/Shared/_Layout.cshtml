@@ -4,13 +4,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData[index: "Title"] - CourseCraft.Web</title>
-    <script type="importmap"></script>
+    <title>CourseCraft</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CourseCraft.Web.styles.css" asp-append-version="true" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    @RenderSection(name: "Styles", required: false)
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 
 @{
@@ -50,8 +54,7 @@
                             }
                         </ul>
                         @{
-                            string profileImagePath = "images/Default_pfp.svg.png";
-
+                            string profileImagePath = "images/default_pfp.svg.png";
                             string? email = User?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
 
                         }
@@ -71,18 +74,24 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li class="p-0 m-0">
-                                    <a class="dropdown-item text-black" href="javascript:void(0);" id="myCoursesLink">
-                                        <div class="d-flex gap-3">
-                                            <div>
-                                                <i class="bi bi-person-circle"></i>
+                                @if (userRole == "Student")
+                                {
+                                    <li class="p-0 m-0">
+                                        <a class="dropdown-item text-black" href="javascript:void(0);" id="myCoursesLink"
+                                               data-get-url="@Url.Action(action: "GetMyCourses", controller: "Courses")"
+                                               data-complete-url="@Url.Action(action: "MarkAsComplete", controller: "Courses")">
+
+                                            <div class="d-flex gap-3">
+                                                <div>
+                                                    <i class="bi bi-person-circle"></i>
+                                                </div>
+                                                <div>
+                                                    My Courses
+                                                </div>
                                             </div>
-                                            <div>
-                                                My Courses
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                        </a>
+                                    </li>
+                                }
 
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
@@ -115,7 +124,6 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
         <script
         src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/js/site.js"></script>
     </main>
 </div>
 
@@ -166,67 +174,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-@await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync(name: "Scripts", required: false)
 <script src="~/js/site.js" asp-append-version="true"></script>
-<script>
-    $(document).ready(function () {
-    $("#myCoursesLink").click(function () {
-    $.ajax({
-    url: '@Url.Action("GetMyCourses", "Courses")',
-    type: "GET",
-    success: function (data) {
-    console.log(data);
-    var coursesList = $("#coursesList");
-    coursesList.empty();
-
-    if (data.length > 0) {
-    data.forEach(function (course) {
-    let courseItem = `
-    <li class="list-group-item d-flex justify-content-between">
-    ${course.CourseName}
-    <button class="btn btn-sm btn-primary mark-complete" data-course-id="${course.CourseId}">Mark As Complete</button>
-    </li>
-    `;
-    coursesList.append(courseItem);
-    });
-    } else {
-    coursesList.append(
-    '<li class="list-group-item">No courses found.</li>'
-    );
-    }
-
-    $("#coursesModal").modal("show");
-    },
-    error: function (error) {
-    console.log(error);
-    alert("An error occurred while fetching the courses.");
-    },
-    });
-    });
-
-    $(document).on("click", ".mark-complete", function () {
-    var courseId = $(this).data("course-id");
-
-    $.ajax({
-    url: '@Url.Action("MarkAsComplete", "Courses")',
-    type: "POST",
-    data: { courseId: courseId },
-    success: function (response) {
-    if (response.success) {
-    alert("Course marked as complete!");
-    $("#coursesModal").modal("hide");
-    } else {
-    alert("Failed to mark course as complete.");
-    }
-    },
-    error: function (error) {
-    console.log(error);
-    alert("An error occurred while marking the course as complete.");
-    },
-    });
-    });
-    });
-</script>
 </body>
 
 </html>

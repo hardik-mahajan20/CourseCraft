@@ -1,3 +1,4 @@
+using CourseCraft.Repository.ViewModels;
 using CourseCraft.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ public class EnrollmentsController(ICoursesService courseService) : Controller
     [HttpGet]
     public async Task<IActionResult> GetEnrollments()
     {
-        var enrollments = await _courseService.GetEnrollmentsAsync();
+        List<StudentEnrollmentViewModel>? enrollments = await _courseService.GetEnrollmentsAsync();
         return Json(enrollments);
     }
 

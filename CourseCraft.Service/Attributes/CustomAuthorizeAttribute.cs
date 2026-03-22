@@ -92,6 +92,8 @@ public class CustomAuthorizeAttribute(string requiredPermission = "", params str
             {
                 { "Home", 1 },
                 { "Dashboard", 2 },
+                { "Courses", 3 },
+                { "Enrollments", 4 },
             };
 
         return keyValuePairs.TryGetValue(controllerName, out int moduleId) ? moduleId : 0;
