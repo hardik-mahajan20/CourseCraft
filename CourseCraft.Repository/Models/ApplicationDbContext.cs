@@ -15,7 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseStudentMapping> CourseStudentMappings { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("connectionString");
+            => optionsBuilder.UseNpgsql("Host=localhost;Database=CourseCraft;Username=postgres;password=YOUR_PASSWORD");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

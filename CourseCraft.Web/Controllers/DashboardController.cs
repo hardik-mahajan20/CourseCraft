@@ -1,4 +1,4 @@
-using CourseCraft.Repository.Models;
+using CourseCraft.Repository.ViewModels;
 using CourseCraft.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +33,11 @@ public class DashboardController(ICoursesService courseService) : Controller
     #region GetAllCourses
 
     [HttpGet]
+    [Authorize(Roles = "Admin, Student")]
     public async Task<IActionResult> GetAllCourses()
     {
-        List<Course>? courses = await _courseService.GetAllCoursesAsync();
+        int userId = int.Parse(User.FindFirst("UserId")!.Value);
+        List<CourseViewModel>? courses = await _courseService.GetAllCoursesAsync(userId);
         return Json(courses);
     }
 

@@ -15,13 +15,13 @@ public class AuthenticationService(IUsersRepository usersRepository) : IAuthenti
 
     public async Task<UserLoginViewModel?> AuthenticateUserUsingEmailPasswordAsync(string userEmail, string userPassword)
     {
-        // string? hashedPassword = HashPassword(userPassword);
+        string? hashedPassword = HashPassword(userPassword);
         User? user = await _usersRepository.GetAllUserAsQueryable()
                                                 .FirstOrDefaultAsync(u => u.UserEmail.ToLower() == userEmail.ToLower()
-                                                                && u.UserPassword.ToLower() == userPassword.ToLower());
+                                                                && u.UserPassword.ToLower() == hashedPassword.ToLower());
 
         if (user == null)
-        
+
             return null;
 
         UserLoginViewModel userLoginViewModel = new()

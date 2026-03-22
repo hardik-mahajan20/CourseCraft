@@ -13,9 +13,26 @@ public class CoursesService(ICoursesRepository coursesRepository, ICourseStudent
 
     #region GetAllCourses
 
-    public async Task<List<Course>> GetAllCoursesAsync()
+    public async Task<List<CourseViewModel>> GetAllCoursesAsync(int userId)
     {
-        return await _coursesRepository.GetAllCoursesAsQueryable().ToListAsync();
+        List<CourseViewModel>? courses = await _coursesRepository
+         .GetAllCoursesAsQueryable()
+         .Where(c => c.IsOpen && !c.IsDeleted)
+         .Select(c => new CourseViewModel
+         {
+             CourseId = c.CourseId,
+             CourseName = c.CourseName,
+             CourseContent = c.CourseContent,
+             CourseCredits = c.CourseCredits,
+             CourseDepartment = c.CourseDepartment,
+
+             IsEnrolled = _courseStudentMappingRepository
+                 .GetCourseStudentMappingsWithUsersAndCourseAsQueryable()
+                 .Any(csm => csm.CourseId == c.CourseId && csm.UserId == userId)
+         })
+         .ToListAsync();
+
+        return courses;
     }
 
     #endregion
@@ -24,10 +41,10 @@ public class CoursesService(ICoursesRepository coursesRepository, ICourseStudent
 
     public async Task<List<StudentEnrollmentViewModel>> GetEnrollmentsAsync()
     {
-        List<CourseStudentMapping>? courseStudentMappings = await
-                                                                _courseStudentMappingRepository
-                                                                    .GetCourseStudentMappingsWithUsersAndCourseAsQueryable()
-                                                                        .ToListAsync();
+        List<CourseStudentMapping>? courseStudentMappings
+        = await _courseStudentMappingRepository
+            .GetCourseStudentMappingsWithUsersAndCourseAsQueryable()
+                .ToListAsync();
 
         return courseStudentMappings.Select(e => new StudentEnrollmentViewModel
         {
@@ -43,13 +60,28 @@ public class CoursesService(ICoursesRepository coursesRepository, ICourseStudent
 
     #region GetCoursesByUserId
 
-    public async Task<List<Course>> GetCoursesByUserIdAsync(int userId)
+    public async Task<List<CourseViewModel>> GetCoursesByUserIdAsync(int userId)
     {
         List<CourseStudentMapping>? courseStudentMappings = await _courseStudentMappingRepository
                                                                     .GetCourseStudentMappingsWithUsersAsQueryable()
                                                                         .Where(csm => csm.UserId == userId)
                                                                          .ToListAsync();
-        return courseStudentMappings.Select(csm => csm.Course!).ToList();
+
+        List<CourseViewModel>? courses = courseStudentMappings
+               .Where(csm => csm.Course != null)
+               .Select(csm => new CourseViewModel
+               {
+                   CourseId = csm.Course!.CourseId,
+                   CourseName = csm.Course.CourseName,
+                   CourseContent = csm.Course.CourseContent,
+                   CourseCredits = csm.Course.CourseCredits,
+                   CourseDepartment = csm.Course.CourseDepartment,
+                   IsOpen = csm.Course.IsOpen,
+                   IsCompleted = csm.IsCompleted
+               })
+               .ToList();
+
+        return courses;
     }
 
     #endregion
@@ -234,7 +266,7 @@ public class CoursesService(ICoursesRepository coursesRepository, ICourseStudent
 
         if (courseStudentMapping != null)
         {
-            courseStudentMapping.IsCompleted = true;
+            courseStudentMapping.IsCompleted = !courseStudentMapping.IsCompleted;
             return await _courseStudentMappingRepository.SaveChangesAsync() > 0;
         }
 
