@@ -1,7 +1,7 @@
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
 
-namespace CourseCraft.Repository.Implmentations;
+namespace CourseCraft.Repository.Implementations;
 
 public class UsersRepository(ApplicationDbContext applicationDbContext) : IUsersRepository
 {
@@ -12,6 +12,16 @@ public class UsersRepository(ApplicationDbContext applicationDbContext) : IUsers
     public IQueryable<User> GetAllUserAsQueryable()
     {
         return _applicationDbContext.Users.AsQueryable();
+    }
+
+    #endregion
+
+    #region AddUser
+
+    public async Task<bool> AddUserAsync(User user)
+    {
+        await _applicationDbContext.Users.AddAsync(user);
+        return await _applicationDbContext.SaveChangesAsync() > 0;
     }
 
     #endregion

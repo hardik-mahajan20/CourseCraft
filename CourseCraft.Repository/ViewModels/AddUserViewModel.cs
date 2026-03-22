@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CourseCraft.Repository.ViewModels;
 
-public class UserLoginViewModel
+public class AddUserViewModel
 {
     [Required(ErrorMessage = "Email is required")]
     [StringLength(100, ErrorMessage = "Email cannot be longer than 100 characters.")]
@@ -14,7 +14,13 @@ public class UserLoginViewModel
     [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters long.")]
     public required string UserPassword { get; set; }
 
-    public string? UserRole { get; set; }
+    [Required(ErrorMessage = "Confirm password is required.")]
+    [Compare("UserPassword", ErrorMessage = "Passwords do not match.")]
+    public required string ConfirmPassword { get; set; }
 
-    public bool RememberMe { get; set; }
+    public string UserRole { get; set; } = "Student";
+
+    [Required(ErrorMessage = "UserName  is required")]
+    [StringLength(100, ErrorMessage = "UserName cannot be longer than 100 characters.")]
+    public required string UserName { get; set; }
 }

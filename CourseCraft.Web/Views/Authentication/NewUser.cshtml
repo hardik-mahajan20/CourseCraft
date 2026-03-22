@@ -1,0 +1,72 @@
+@model CourseCraft.Repository.ViewModels.AddUserViewModel
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewData[index: "Title"] = "Login Page";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/new-user.css" />
+}
+<section class="text-center">
+    <div class="p-5 bg-image" id='back-ground-panel' alt="This is background image"></div>
+    <div class="card mx-4 mx-md-5 shadow-5-strong  d-flex justify-content-center login-content-area">
+        <div class="card-body">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-5">Create Account</h2>
+                    <form method="post" asp-action="NewUser" asp-controller="Authentication" novalidate>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center form-floating">
+                                <input asp-for="UserEmail" type="email" class="form-control " id="custom-login-input"
+                                       aria-describedby="emailHelp" placeholder="Email*">
+                                    <label for="UserEmail">Email address*</label>
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <span asp-validation-for="UserEmail" class="text-danger"></span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center form-floating">
+                                    <input asp-for="UserName" type="text" class="form-control" id="username-input"
+                                           placeholder="UserName*">
+                                        <label asp-for="UserName"></label>
+                                        <i class="bi bi-person-circle"
+                                           style="display: inline; margin-left: -23px; vertical-align: middle"></i>
+                                    </div>
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="d-flex align-items-center form-floating">
+                                        <input type="password" class="form-control" asp-for="UserPassword"
+                                               id="custom-password-input" placeholder="Password*">
+                                            <label for="UserPassword">Password*</label>
+                                            <i class="bi bi-eye-fill"></i>
+                                        </div>
+                                        <span asp-validation-for="UserPassword" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center form-floating">
+                                            <input type="password" class="form-control" asp-for="ConfirmPassword"
+                                                   id="custom-password-input" placeholder="Password*">
+                                                <label for="ConfirmPassword">Confirmation Password*</label>
+                                                <i class="bi bi-eye-fill"></i>
+                                            </div>
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                        <div class="mb-4 form-check">
+                                            <div class="d-flex justify-content-end">
+
+                                                <div class="">
+                                                    <a class="text-decoration-none" asp-controller="Authentication"
+                                                           asp-action="UserLogin"
+                                                           asp-route-email="@(Model?.UserEmail ?? string.Empty)">Already a
+                                                        Member?</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>

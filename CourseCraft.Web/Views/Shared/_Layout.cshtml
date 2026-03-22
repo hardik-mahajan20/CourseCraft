@@ -6,44 +6,227 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData[index: "Title"] - CourseCraft.Web</title>
     <script type="importmap"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CourseCraft.Web.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
+@{
+    string userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "Student";
+}
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-taggable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CourseCraft.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                    </ul>
+                <a class="navbar-brand" asp-area="" asp-controller="Dashboard" asp-action="Index">Student Course
+                    Registration
+                    System </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard"
+                                   asp-action="Index">Dashboard</a>
+                            </li>
+                            @if (userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Courses"
+                                       asp-action="Index">Courses</a>
+                                </li>
+                            }
+                            @if (userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments"
+                                       asp-action="Enrollments">Enrollments</a>
+                                </li>
+                            }
+                        </ul>
+                        @{
+                            string profileImagePath = "images/Default_pfp.svg.png";
+
+                            string? email = User?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+
+                        }
+                        <div><img src="/@profileImagePath" alt="Profile Image" class="dropdown-toggle rounded-circle"
+                                      data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" width="40px"
+                                      height="40px" style="cursor: pointer;">
+                            <ul class="dropdown-menu dropdown-menu-lg-end">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center justify-content-start"
+                                           style="cursor: pointer;">
+
+                                        <img src="/@profileImagePath" class="rounded-circle" width="12%"
+                                             style="object-fit: cover;" />
+                                        <span class="ms-3"> @email</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li class="p-0 m-0">
+                                    <a class="dropdown-item text-black" href="javascript:void(0);" id="myCoursesLink">
+                                        <div class="d-flex gap-3">
+                                            <div>
+                                                <i class="bi bi-person-circle"></i>
+                                            </div>
+                                            <div>
+                                                My Courses
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                           data-bs-target="#logoutModal">
+                                        <div class="d-flex gap-3">
+                                            <div>
+                                                <i class="bi bi-box-arrow-left"></i>
+                                            </div>
+                                            <div class="d-flex justify-content-start">
+                                                Logout
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CourseCraft.Web
         </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+</nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        @RenderBody()
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+        <script
+        src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/js/site.js"></script>
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy;Student Course
+        Registration
+        System
+    </div>
+</footer>
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  bd-example-modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center gap-2">
+                <div>
+                    <i class="bi bi-exclamation-triangle" width="30px" height="30px"></i>
+                </div>
+                <div>Are you sure you want to logout?</div>
+            </div>
+            <div class="modal-footer d-flex align-items-center justify-content-center">
+                <form id="logoutForm" action="@Url.Action("Logout", "Authentication")" method="post">
+                    <button type="submit" class="btn btn-primary">YES</button>
+                </form>
+                <button type="button" class="btn  btn-outline-primary" data-bs-dismiss="modal">NO</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal to display courses -->
+<div class="modal" tabindex="-1" id="coursesModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Your Enrolled Courses</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="coursesList" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+@await RenderSectionAsync("Scripts", required: false)
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+    $("#myCoursesLink").click(function () {
+    $.ajax({
+    url: '@Url.Action("GetMyCourses", "Courses")',
+    type: "GET",
+    success: function (data) {
+    console.log(data);
+    var coursesList = $("#coursesList");
+    coursesList.empty();
+
+    if (data.length > 0) {
+    data.forEach(function (course) {
+    let courseItem = `
+    <li class="list-group-item d-flex justify-content-between">
+    ${course.CourseName}
+    <button class="btn btn-sm btn-primary mark-complete" data-course-id="${course.CourseId}">Mark As Complete</button>
+    </li>
+    `;
+    coursesList.append(courseItem);
+    });
+    } else {
+    coursesList.append(
+    '<li class="list-group-item">No courses found.</li>'
+    );
+    }
+
+    $("#coursesModal").modal("show");
+    },
+    error: function (error) {
+    console.log(error);
+    alert("An error occurred while fetching the courses.");
+    },
+    });
+    });
+
+    $(document).on("click", ".mark-complete", function () {
+    var courseId = $(this).data("course-id");
+
+    $.ajax({
+    url: '@Url.Action("MarkAsComplete", "Courses")',
+    type: "POST",
+    data: { courseId: courseId },
+    success: function (response) {
+    if (response.success) {
+    alert("Course marked as complete!");
+    $("#coursesModal").modal("hide");
+    } else {
+    alert("Failed to mark course as complete.");
+    }
+    },
+    error: function (error) {
+    console.log(error);
+    alert("An error occurred while marking the course as complete.");
+    },
+    });
+    });
+    });
+</script>
 </body>
 
 </html>
