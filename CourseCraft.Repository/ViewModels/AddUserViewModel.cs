@@ -17,7 +17,8 @@ public class AddUserViewModel
     [Required(ErrorMessage = "Confirm password is required.")]
     [Compare("UserPassword", ErrorMessage = "Passwords do not match.")]
     public required string ConfirmPassword { get; set; }
-    public required string UserRole { get; set; }
+
+    public string UserRole { get; set; } = "Student";
 
     [Required(ErrorMessage = "UserName  is required")]
     [StringLength(100, ErrorMessage = "UserName cannot be longer than 100 characters.")]

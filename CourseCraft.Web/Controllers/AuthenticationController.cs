@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using CourseCraft.Repository.ViewModels;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Interfaces;
 using CourseCraft.Service.Utilities;
+using System.Text;
 
 namespace CourseCraft.Web.Controllers;
 
@@ -58,8 +59,6 @@ public class AuthenticationController(IAuthenticationService authenticationServi
             }
             string? token = await _jwtService.GenerateJwtTokenAsync(userLoginViewModel.UserEmail, model.RememberMe);
 
-
-
             CookieUtils.SaveJWTToken(Response, token);
 
             if (model.RememberMe)
@@ -73,6 +72,93 @@ public class AuthenticationController(IAuthenticationService authenticationServi
             TempData["ErrorMessage"] = "An error occurred while processing your request. Please try again.";
             return View();
         }
+    }
+
+    #endregion
+
+    #region NewUser GET
+
+    [HttpGet]
+    public IActionResult NewUser()
+    {
+        return View();
+    }
+
+    #endregion
+
+    #region NewUser Post
+
+    [HttpPost]
+    public async Task<IActionResult> NewUser(AddUserViewModel addUserViewModel)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(addUserViewModel);
+            }
+
+            bool isUserExist = await _authenticationService
+                                        .CheckIfUserExistsAsync(addUserViewModel.UserEmail!.ToLower());
+
+            if (isUserExist == true)
+            {
+                ModelState.AddModelError(
+                    "UserEmail",
+                    "Email already exists. Please use a different email."
+                );
+                return View(addUserViewModel);
+            }
+            else
+            {
+                // Create a new user
+                AddUserViewModel? newUser = new()
+                {
+                    UserEmail = addUserViewModel.UserEmail.ToLower(),
+                    UserPassword = HashPassword(addUserViewModel.UserPassword!),
+                    ConfirmPassword = HashPassword(addUserViewModel.UserPassword!),
+                    UserName = addUserViewModel.UserName,
+                    UserRole = "Student"
+                };
+
+                bool isUserAdded = await _authenticationService.RegisterUserAsync(newUser);
+
+                return RedirectToAction("UserLogin", "Authentication");
+            }
+        }
+        catch (Exception)
+        {
+            TempData["ErrorMessage"] = "An error occurred while processing your request. Please try again.";
+            return View(addUserViewModel);
+        }
+    }
+
+    #endregion
+
+    #region LogOut 
+
+    public IActionResult Logout()
+    {
+        try
+        {
+            CookieUtils.ClearCookies(HttpContext);
+            SessionUtils.ClearSession(HttpContext);
+            return RedirectToAction("UserLogin", "Authentication");
+        }
+        catch (Exception)
+        {
+            TempData["ErrorMessage"] = "An error occurred while processing your request. Please try again.";
+            return RedirectToAction("UserLogin", "Authentication");
+        }
+    }
+
+    #endregion
+
+    #region HelperMethod 
+
+    private static string HashPassword(string password)
+    {
+        return Convert.ToBase64String(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(password)));
     }
 
     #endregion

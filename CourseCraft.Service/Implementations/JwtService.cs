@@ -60,7 +60,7 @@ public class JwtService(IConfiguration configuration, IUsersRepository userRepos
     #endregion
 
 
-    #region  ValidatToken
+    #region  ValidateToken
 
     public ClaimsPrincipal? ValidateToken(string token)
     {
