@@ -10,6 +10,9 @@
 <div class="row" id="courseContainer">
 
 </div>
+<script>
+    const userRole = '@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value';
+</script>
 @section Scripts {
     <script src="~/js/dashboard.js"></script>
 }

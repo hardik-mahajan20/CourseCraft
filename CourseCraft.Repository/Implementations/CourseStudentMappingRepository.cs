@@ -23,7 +23,7 @@ public class CourseStudentMappingRepository(ApplicationDbContext applicationDbCo
     public IQueryable<CourseStudentMapping> GetCourseStudentMappingsWithUsersAsQueryable()
     {
         return _applicationDbContext.CourseStudentMappings
-                             .Include(csm => csm.User)
+                             .Include(csm => csm.Course)
                              .AsQueryable();
     }
 

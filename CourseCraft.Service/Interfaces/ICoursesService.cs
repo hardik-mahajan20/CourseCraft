@@ -1,4 +1,3 @@
-using CourseCraft.Repository.Models;
 using CourseCraft.Repository.ViewModels;
 
 namespace CourseCraft.Service.Interfaces;
@@ -6,10 +5,11 @@ namespace CourseCraft.Service.Interfaces;
 public interface ICoursesService
 {
     /// <summary>
-    /// Retrieves all course asynchronously.
+    /// Retrieves all courseViewModel asynchronously.
     /// </summary>
-    /// <returns>A list of course asynchronously.</returns>
-    Task<List<Course>> GetAllCoursesAsync();
+    /// <param name="userId">The ID of the user to retrieve the courseViewModel for.</param>
+    /// <returns>A list of courseViewModel asynchronously.</returns>
+    Task<List<CourseViewModel>> GetAllCoursesAsync(int userId);
 
     /// <summary>
     /// Retrieves all studentEnrollmentViewModel asynchronously.
@@ -22,7 +22,7 @@ public interface ICoursesService
     /// </summary>
     /// <param name="userId">The ID of the user to retrieve the course for.</param>
     /// <returns>A list of course asynchronously.</returns>
-    Task<List<Course>> GetCoursesByUserIdAsync(int userId);
+    Task<List<CourseViewModel>> GetCoursesByUserIdAsync(int userId);
 
     /// <summary>
     /// Retrieves all courseViewModel asynchronously.
@@ -38,7 +38,7 @@ public interface ICoursesService
     /// <param name="pageNumber">The page number for pagination.</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <param name="sortColumn">The filed on the sorting to apply.</param>
-    /// <param name="sortDirection">The directino of the sort.</param>
+    /// <param name="sortDirection">The direction of the sort.</param>
     /// <returns>A task that returns a paginated list of courseViewModel view models.</returns>
     Task<PaginatedList<CourseViewModel>> GetPaginatedCoursesAsync(string search, int page, int pageSize, string sortColumn, string sortDirection);
 

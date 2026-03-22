@@ -1,4 +1,3 @@
-using CourseCraft.Repository.Models;
 using CourseCraft.Repository.ViewModels;
 using CourseCraft.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -250,13 +249,14 @@ public class CoursesController(ICoursesService coursesService, ILogger<CoursesCo
     #region GetMyCourses
 
     [HttpGet]
+    [Authorize(Roles = "Student")]
     public async Task<IActionResult> GetMyCourses()
     {
         int userId = int.Parse(User.FindFirst("UserId")!.Value);
 
-        List<Course>? courses = await _coursesService.GetCoursesByUserIdAsync(userId);
+        List<CourseViewModel>? courseViewModels = await _coursesService.GetCoursesByUserIdAsync(userId);
 
-        return Json(courses);
+        return Json(courseViewModels);
     }
 
     #endregion

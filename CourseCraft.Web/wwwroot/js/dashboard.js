@@ -9,11 +9,25 @@ function loadCourses() {
     type: "GET",
     success: function (data) {
       console.log(data);
-
       var container = $("#courseContainer");
       container.empty();
 
       $.each(data, function (i, course) {
+        let enrollButton = "";
+
+        if (userRole === "Student") {
+          if (course.isEnrolled) {
+            enrollButton = `
+              <button class="btn btn-secondary" disabled>
+                Already Enrolled
+              </button>`;
+          } else {
+            enrollButton = `
+              <button class="btn btn-primary enroll-button" data-course-id="${course.courseId}">
+                Enroll in this Course
+              </button>`;
+          }
+        }
         var cardHtml = `
         <div class="col-sm-6">
           <div class="card mb-3">
@@ -22,9 +36,7 @@ function loadCourses() {
               <p class="card-text">Course Content : ${course.courseContent}</p>
               <p class="card-text">Course Credits : ${course.courseCredits}</p>
               <p class="card-text">Department : ${course.courseDepartment}</p>
-              <button class="btn btn-primary enroll-button" data-course-id="${course.courseId}">
-                Enroll in this Course
-              </button>
+                ${enrollButton}
             </div>
           </div>
         </div>`;
@@ -47,6 +59,7 @@ $(document).on("click", ".enroll-button", function () {
     type: "POST",
     data: { courseId: courseId },
     success: function (response) {
+      loadCourses();
       toastr.success(response.message);
     },
     error: function () {
