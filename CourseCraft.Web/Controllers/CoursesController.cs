@@ -37,7 +37,8 @@ public class CoursesController(ICoursesService coursesService, ILogger<CoursesCo
     {
         try
         {
-            PaginatedList<CourseViewModel>? courseViewModels = await _coursesService.GetPaginatedCoursesAsync(search, page, pageSize, sortColumn, sortDirection);
+            PaginatedList<CourseViewModel>? courseViewModels = await _coursesService
+                                .GetPaginatedCoursesAsync(search, page, pageSize, sortColumn, sortDirection);
 
             ViewBag.PageNumber = page;
             ViewBag.PageSize = pageSize;
@@ -63,7 +64,8 @@ public class CoursesController(ICoursesService coursesService, ILogger<CoursesCo
     {
         try
         {
-            if (await _coursesService.IsDuplicateCourseNameAsync(model.CourseName ?? string.Empty, model.CourseId))
+            if (await _coursesService
+                    .IsDuplicateCourseNameAsync(model.CourseName ?? string.Empty, model.CourseId))
             {
                 ModelState.AddModelError("CourseName", "Course name already exists.");
             }
@@ -142,7 +144,8 @@ public class CoursesController(ICoursesService coursesService, ILogger<CoursesCo
     {
         try
         {
-            if (await _coursesService.IsDuplicateCourseNameAsync(model.CourseName ?? string.Empty, model.CourseId))
+            if (await _coursesService
+                        .IsDuplicateCourseNameAsync(model.CourseName ?? string.Empty, model.CourseId))
             {
                 ModelState.AddModelError("CourseName", "Course name already exists.");
             }
@@ -213,6 +216,7 @@ public class CoursesController(ICoursesService coursesService, ILogger<CoursesCo
     #region EnrollStudentInCourse
 
     [HttpPost]
+    [Authorize(Roles = "Student")]
     public async Task<IActionResult> EnrollStudentInCourse(int courseId)
     {
         int userId = int.Parse(User.FindFirst("UserId")!.Value);

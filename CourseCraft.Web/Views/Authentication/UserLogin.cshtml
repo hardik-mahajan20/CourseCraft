@@ -3,93 +3,55 @@
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
     ViewData[index: "Title"] = "Login Page";
 }
-@if (TempData[key: "ErrorMessage"] != null)
-{
-    <script>toastr.error('@TempData["ErrorMessage"]');</script>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <script>toastr.success('@TempData["SuccessMessage"]');</script>
-}
-@if (TempData["InfoMessage"] != null)
-{
-    <script>toastr.info('@TempData["InfoMessage"]');</script>
-}
-@if (ViewBag.ErrorMessage != null)
-{
-    <script>toastr.error('@ViewBag.ErrorMessage');</script>
-}
-@if (ViewBag.SuccessMessage != null)
-{
-    <script>toastr.success('@ViewBag.SuccessMessage');</script>
-}
-@if (ViewBag.WarningMessage != null)
-{
-    <script>toastr.warning('@ViewBag.WarningMessage');</script>
-}
-@if (ViewBag.InfoMessage != null)
-{
-    <script>toastr.info('@ViewBag.InfoMessage');</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" />
 }
 <section class="text-center ">
-    <div class="p-5 bg-image" style="
-    background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
-    background-size: auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 50vh;
-    "></div>
+    <div class="p-5 bg-image" id='back-ground-panel' alt="This is background image"></div>
 
-    <div class="card mx-4 mx-md-5 shadow-5-strong  d-flex justify-content-center" style="
-        margin-top: -100px;
-        backdrop-filter: blur(30px);
-        ">
-        <div class="card-body ">
+    <div class="card mx-4 mx-md-5 shadow-5-strong  d-flex justify-content-center login-content-area">
+        <div class="card-body">
 
-            <div class=" row d-flex justify-content-center">
-                <div class=" col-lg-6">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-6">
                     <h2 class="fw-bold mb-5">User Login</h2>
                     <form method="post" asp-action="UserLogin" asp-controller="Authentication" novalidate>
                         <div class="mb-4">
-                            <div class=" d-flex align-items-center form-floating">
+                            <div class="d-flex align-items-center form-floating">
                                 <input asp-for="UserEmail" type="email" class="form-control " id="custom-login-input"
                                        aria-describedby="emailHelp" placeholder="Email*">
                                     <label for="UserEmail">Email address</label>
-                                    <img src="~/images/icons/user.png"
-                                         style="display: inline; margin-left: -23px; vertical-align: middle">
-                                    </div>
-                                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                                    <i class="bi bi-person-circle"></i>
                                 </div>
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center form-floating">
-                                        <input type="password" class="form-control" asp-for="UserPassword"
-                                               id="custom-password-input" placeholder="Password*">
-                                            <label for="UserPassword">Password</label>
-                                            <img src="~/images/icons/hidden.png" id="toggle_button_eye"
-                                                 style="display: inline; margin-left: -23px; vertical-align: middle"
-                                                 onclick="toggle()">
+                                <span asp-validation-for="UserEmail" class="text-danger"></span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center form-floating">
+                                    <input type="password" class="form-control" asp-for="UserPassword"
+                                           id="custom-password-input" placeholder="Password*">
+                                        <label for="UserPassword">Password</label>
+                                        <i class="bi bi-eye"></i>
+                                    </div>
+                                    <span asp-validation-for="UserPassword" class="text-danger"></span>
+                                </div>
+                                <div class="mb-4 form-check">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <input type="checkbox" class="form-check-input" asp-for="RememberMe">
+                                                <label class="form-check-label" for="RememberMe">Remember me</label>
                                             </div>
-                                            <span asp-validation-for="UserPassword" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-4 form-check">
-                                            <div class="d-flex justify-content-between">
-                                                <div>
-                                                    <input type="checkbox" class="form-check-input" asp-for="RememberMe">
-                                                        <label class="form-check-label" for="RememberMe" style="cursor: pointer;">Remember
-                                                            me</label>
-                                                        </div>
-                                                        <div class="">
-                                                            <a class="text-decoration-none coustom-link-color" asp-controller="Authentication"
-                                                                   asp-action="NewUser" asp-route-email="@(Model?.UserEmail ?? string.Empty)">Not
-                                                                yet
-                                                                Member?</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <button class="btn btn-primary w-100" type="submit">Login</button>
-                                                </form>
+                                            <div class="">
+                                                <a class="text-decoration-none coustom-link-color" asp-controller="Authentication"
+                                                       asp-action="NewUser" asp-route-email="@(Model?.UserEmail ?? string.Empty)">Not
+                                                    yet
+                                                    Member?</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                                    </form>
                                 </div>
-                            </section>
+                            </div>
+                        </div>
+                    </div>
+                </section>

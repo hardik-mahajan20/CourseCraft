@@ -33,9 +33,9 @@ public class DashboardController(ICoursesService courseService) : Controller
     #region GetAllCourses
 
     [HttpGet]
-    public IActionResult GetAllCourses()
+    public async Task<IActionResult> GetAllCourses()
     {
-        Task<List<Course>>? courses = _courseService.GetAllCoursesAsync();
+        List<Course>? courses = await _courseService.GetAllCoursesAsync();
         return Json(courses);
     }
 

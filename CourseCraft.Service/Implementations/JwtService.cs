@@ -37,6 +37,7 @@ public class JwtService(IConfiguration configuration, IUsersRepository userRepos
             new Claim("username", user.UserName),
             new Claim(ClaimTypes.Email, user.UserEmail),
             new Claim(ClaimTypes.Role, user.UserRole),
+             new Claim("UserId", user.UserId.ToString())
         ];
 
         if (rememberMe)

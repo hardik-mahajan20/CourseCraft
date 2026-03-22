@@ -34,12 +34,13 @@ public class AuthenticationController(IAuthenticationService authenticationServi
 
             UserLoginViewModel? userLoginViewModel = await _authenticationService.AuthenticateUserUsingEmailPasswordAsync(
                 model.UserEmail!.ToLower(),
-                model.UserPassword!
+                model.UserPassword!.ToLower()!
             );
 
             if (userLoginViewModel == null)
             {
-                bool isUserExists = await _authenticationService.CheckIfUserExistsAsync(model.UserEmail.ToLower());
+                bool isUserExists = await _authenticationService
+                                            .CheckIfUserExistsAsync(model.UserEmail.ToLower());
                 if (isUserExists)
                 {
                     ModelState.AddModelError(
@@ -57,7 +58,8 @@ public class AuthenticationController(IAuthenticationService authenticationServi
                 );
                 return View(model);
             }
-            string? token = await _jwtService.GenerateJwtTokenAsync(userLoginViewModel.UserEmail, model.RememberMe);
+            string? token = await _jwtService.
+                                    GenerateJwtTokenAsync(userLoginViewModel.UserEmail, model.RememberMe);
 
             CookieUtils.SaveJWTToken(Response, token);
 
