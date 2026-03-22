@@ -1,10 +1,11 @@
 using System.Security.Claims;
 using System.Text;
-using CourseCraft.Repository.Implmentations;
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Implementations;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
-using CourseCraft.Service.Implmentations;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Implementations;
+using CourseCraft.Service.Interfaces;
+using CourseCraft.Service.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,7 +22,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Dependency Injection for Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ICoursesService, CoursesService>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
+builder.Services.AddScoped<ICourseStudentMappingRepository, CourseStudentMappingRepository>();
 
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -63,7 +67,29 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseMiddleware<JwtTokenMiddleware>();
 
+app.UseStatusCodePages(context =>
+{
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode == 404)
+    {
+        response.Redirect("/Error/PageNotFound");
+    }
+    else if (response.StatusCode == 403)
+    {
+        response.Redirect("/Error/AccessDenied");
+    }
+    else if (response.StatusCode == 500)
+    {
+        response.Redirect("/Error/GenericError");
+    }
+
+    return Task.CompletedTask;
+});
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

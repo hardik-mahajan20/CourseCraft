@@ -1,14 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using CourseCraft.Repository.Intefaces;
+using CourseCraft.Repository.Interfaces;
 using CourseCraft.Repository.Models;
-using CourseCraft.Service.Intefaces;
+using CourseCraft.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CourseCraft.Service.Implmentations;
+namespace CourseCraft.Service.Implementations;
 
 public class JwtService(IConfiguration configuration, IUsersRepository userRepository) : IJwtService
 {
@@ -37,6 +37,7 @@ public class JwtService(IConfiguration configuration, IUsersRepository userRepos
             new Claim("username", user.UserName),
             new Claim(ClaimTypes.Email, user.UserEmail),
             new Claim(ClaimTypes.Role, user.UserRole),
+             new Claim("UserId", user.UserId.ToString())
         ];
 
         if (rememberMe)
@@ -60,7 +61,7 @@ public class JwtService(IConfiguration configuration, IUsersRepository userRepos
     #endregion
 
 
-    #region  ValidatToken
+    #region  ValidateToken
 
     public ClaimsPrincipal? ValidateToken(string token)
     {

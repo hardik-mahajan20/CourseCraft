@@ -1,0 +1,12 @@
+#back-ground-panel {
+  background-image: url("https://mdbootstrap.com/img/new/textures/full/171.jpg");
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 50vh;
+}
+
+.login-content-area {
+  margin-top: -100px;
+  backdrop-filter: blur(30px);
+}

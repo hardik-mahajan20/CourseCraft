@@ -14,4 +14,5 @@ public class User
     public required string UserPassword { get; set; }
     [Required]
     public required string UserRole { get; set; }
+    public ICollection<CourseStudentMapping>? CourseStudentMappings { get; set; }
 }

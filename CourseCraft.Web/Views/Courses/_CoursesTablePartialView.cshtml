@@ -1,0 +1,83 @@
+<div class="table-responsive shadow-sm p-3 bg-white rounded shadow">
+    <div class="table-wrapper border-0">
+        <table class="table">
+                <tr class="table-header">
+                    <th class="align-middle">
+                        Name
+                    </th>
+                    <th class="align-middle">Content</th>
+                    <th class="align-middle">Credits</th>
+                    <th class="align-middle">Department </th>
+                   
+                    <th class="align-middle">IsOpen </th>
+                    
+                    <th  class="align-middle">Action</th>
+
+                </tr>
+            <tbody>
+                 @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="8" class="text-center">No records found</td>
+                    </tr>
+                }
+                @foreach (dynamic course in Model)
+                {
+                    <tr>
+                        <td>@course.CourseName</td>
+                        <td>@course.CourseContent</td>
+                        <td>@course.CourseCredits</td>
+                        <td>@course.CourseDepartment</td>
+                        <td>
+                            <div class="form-check form-switch is-enabled-toggle ">
+                                <input class="form-check-input form-check-input-quick toggle-switch" type="checkbox"   role="switch" name="IsEnabled_@course.CourseId"
+                                    id="IsEnabled_@course.CourseId" value="true" data-id="@course.CourseId" data-type="IsEnabled"
+                                    @(course.IsOpen ? "checked" : "")   style="width: 60px; height: 30px;  opacity: 1;" />
+                            </div>
+                        </td>
+                        <td class="text-start">
+                             
+                            <div class="d-flex justify-content-center align-items-center">
+                              
+                                <button class="text-black text-reset edit-course btn cursor-pointer" data-courseId="@course.CourseId">
+                                <i class="bi bi-pen"></i>
+                                </button>
+                              
+                                
+                                <button class="text-black text-reset delete-course btn cursor-pointer" data-courseId="@course.CourseId">
+                                <i class="bi bi-trash"></i>
+                                </button>
+                              
+                            </div>
+                        </td>
+                       
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="pagination-container d-flex flex-wrap flex-md-nowrap ">
+        <span>Showing @ViewBag.FromRec - @ViewBag.ToRec of @ViewBag.TotalItems</span>
+        @{
+            int[] pageSizes = { 5, 10, 20 };
+        }
+
+        <select id="pageSizeDropdown" class="form-select">
+            @foreach (var size in pageSizes)
+            {
+                <option value="@size" selected="@(ViewBag.PageSize == size ? "selected" : null)">@size</option>
+            }
+        </select>
+
+        <input type="hidden" id="totalPages" value="@ViewBag.TotalPages" />
+        <button id="prevPageBtn">
+            <i class="bi bi-chevron-compact-left"></i>
+        </button>
+        <button id="nextPageBtn">
+            <i class="bi bi-chevron-compact-right"></i>
+        </button>
+
+    </div>
+</div>
